@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load django_tables2 %}
+{% load django_bootstrap5 %}
+
+{% block title %}Wiki Log{% endblock %}
+
+{% block content %}
+    {% render_table table %}
+{% endblock %}

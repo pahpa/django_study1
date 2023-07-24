@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load django_tables2 %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+    {% if  wiki.fullurl %}
+        <h5><a href="{{ wiki.fullurl }}">{{ wiki.param }}</a></h5>
+    {% else %}
+        <h5>NO LINK {{ wiki.param }}</h5>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% render_table links %}
+{% endblock %}

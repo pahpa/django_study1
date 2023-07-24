@@ -1,0 +1,29 @@
+{% extends 'bootstrap.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block bootstrap5_content %}
+
+<div class="container">
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            
+            <a class="navbar-brand" href="{% url 'wikiindex' %}">
+                <img src="{% static 'images/favicon.png' %}" alt="" width="30" height="30" class="d-inline-block align-text-top">
+                WikiSearch
+            </a>
+            <form class="d-flex" method="get" action="{% url 'wikipediasearch' %}">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="query" name="query">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    {% autoescape off %}{% bootstrap_messages %}{% endautoescape %}
+
+    {% block content %}
+    {% endblock %}
+
+</div>
+
+{% endblock %}
