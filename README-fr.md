@@ -12,6 +12,8 @@ PYTHON TEST
 * Création d'un env python3.10+ soit par le module venv ou par virtualenv wrapper (https://virtualenvwrapper.readthedocs.io/en/latest/install.html)
   - venv en 3.10.6 pour ma part sous wsl2 (https://docs.microsoft.com/fr-fr/windows/wsl/install)
 * clone du projet (https://github.com/pahpa/django-study)
+* sudo apt install graphviz-dev
+* sudo apt install translate-shell
 * pip install -r requirements-tests.txt
 * python manage.py migrate
 * Création d'un superuser interne
@@ -51,33 +53,35 @@ des widgets plus poussés.
 
 * J'ai utilisé le serveur celery pour la tâche récurrente de test sur le nombre d'url en base de données (pas de rabbitmq, mais redis)
   (celle de check le nombre de link d'une page > 100)
-* Celery en mode Console durant l'exécution d'une task (https://docs.celeryq.dev/en/stable/)
+* Celery en mode Console durant l'exécution d'une task toutes les 60 secondes (https://docs.celeryq.dev/en/stable/)
+  - Celle-ci sera automatiquement créée au démarrage du serveur django
   ![](images/C_console.png)
 * Admin Celery via Django (https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html)
+  
+  1. Interval:
+    - List interval
+    ![](images/C_interval_list.png)
+    - Détail interval
+    ![](images/C_interval.png)
 
-  1. Création d'une crontab d'une minute (https://django-celery-beat.readthedocs.io/en/latest/):
-    - List des configurations crontab
-    ![](./docs/images/C_crontabs_list.png)
-    - Détail de la configuration
-    ![](./docs/images/C_crontabs.png)
-    
-  2. Activation task:
+  2. Periodic task:
     - List des tasks
-    ![](./docs/images/C_tasks_list.png)
+    ![](images/C_task_list.png)
     - Detail d'une task
-    ![](./docs/images/C_tasks_1.png)
-    ![](./docs/images/C_tasks_2.png)
+    ![](images/C_task_detail1.png)
+    ![](images/C_task_detail2.png)
 
   3. Result task (https://django-celery-results.readthedocs.io/en/latest/): 
     - List des résultats des tasks
-    ![](./docs/images/C_result_list.png)
+    ![](images/C_result_list.png)
     - Détail d'un résultat d'une task
-    ![](./docs/images/C_result.png)
+    ![](images/C_result.png)
 
 * Application django_study (http://localhost:8000/)
+  - Veuillez me pardonner mon excellent affichage Front-End :)
   
   1. Ecran Principal
-    ![](./docs/images/wikiapp_list.png)
+    ![](images/wikiapp_list.png)
     - Dans la zone de saisie mettre un mot, une phrase de recherche, une action synchrone de recherche sur wikipedia sera exécutée
     (le mieux étant d'avoir 1 action async avec info de progression ou celery-progress)
     - Un rafraichissement automatique de l'écran sera fait
@@ -85,7 +89,7 @@ des widgets plus poussés.
     - Le jeu de test génére des mots, url, code de retour aléatoirement sans aucun accès à wikipedia
   
   2. Lien Détail
-    ![](./docs/images/wikiapp_detail.png)
+    ![](images/wikiapp_links.png)
 
 ## paHpa (Mes Choix Settings)
 
@@ -132,24 +136,26 @@ des widgets plus poussés.
 
 - génération fichier dot ou png des groupes de models de notre projet:
   ```
-  ./manage.py graph_models --pygraphviz -a -g -o docs/images/models_wikisearch.png
+  ./manage.py graph_models --pygraphviz -a -g -o images/models_wikisearch.png
   ```
-  ![](./docs/images/models_wikisearch.png)
+  ![](images/models_wikisearch.png)
 
 ## paHpa (Utilisation de swagger)
 
 - utilisation de django-ninja (https://django-ninja.rest-framework.com/)
 - accessible pour la liste et la recherche des wikilogs (http://localhost:8000/swagger/docs)
   
-  ![](./docs/images/DjangoSwaggerWikilog.png)
+  ![](images/DjangoSwagger.png)
+  ![](images/DjangoSwaggerWikilog.png)
+  ![](images/DjangoSwaggerWikilogDetail.png)
 
 ## paHpa (Docker)
 
 - https://blog.logrocket.com/dockerizing-django-app/
   ```
   docker kill django-study || true
-	docker rm -f django-study || true
-	docker image rm -f django-study:0.0.0 || true
-	docker build . -t django-study:0.0.0
-	docker run --name django-study -p 127.0.0.1:8000:8000 django-study:0.0.0
+  docker rm -f django-study || true
+  docker image rm -f django-study:0.0.0 || true
+  docker build . -t django-study:0.0.0
+  docker run --name django-study -p 127.0.0.1:8000:8000 django-study:0.0.0
   ```

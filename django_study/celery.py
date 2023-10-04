@@ -20,3 +20,11 @@ app.autodiscover_tasks()
 @app.task(bind=True)
 def debug_task(self):
     print(f"Request: {self.request!r}")
+
+
+app.conf.beat_schedule = {
+    'wikilog_count': {
+        'task': 'wikilog_count',
+        'schedule': 60.0,
+    },
+}
