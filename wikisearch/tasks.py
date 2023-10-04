@@ -9,7 +9,7 @@ from .logger import logger
 from .services import mail_wikilog
 
 
-@shared_task
+@shared_task(name = "wikilog_count")
 def check_wikilog_count():
     logger.info("WikiUrlLog...")
 

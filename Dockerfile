@@ -22,6 +22,21 @@ COPY . $DockerHOME
 # run this command to install all dependencies
 RUN pip install -r requirements.txt
 
+RUN python manage.py migrate --noinput
+
+ENV DJANGO_DB_NAME=default
+ENV DJANGO_SU_NAME=pahpa
+ENV DJANGO_SU_EMAIL=pahpa@pahpa.dev
+ENV DJANGO_SU_PASSWORD=pahpa1234
+ENV DJANGO_SETTINGS_MODULE=django_study.settings
+
+RUN python -c "import django; django.setup(); \
+   from django.contrib.auth.management.commands.createsuperuser import get_user_model; \
+   get_user_model()._default_manager.db_manager('$DJANGO_DB_NAME').create_superuser( \
+   username='$DJANGO_SU_NAME', \
+   email='$DJANGO_SU_EMAIL', \
+   password='$DJANGO_SU_PASSWORD')"
+
 # port where the Django app runs
 EXPOSE 8000
 
